@@ -1,0 +1,26 @@
+{% set is_sub_menu = children|length > 0 %}
+
+{% if is_separator and index > 0 %}
+  <li role="presentation" class="divider {{ index }}"></li>
+{% endif %}
+
+{% if not is_separator or header_text is defined %}
+  <li role="presentation"{% if is_separator or is_sub_menu %} class="{% if is_separator %}dropdown-header{% elseif is_sub_menu %}dropdown-submenu{% endif %}"{% endif %}>
+    {% if is_separator %}
+      {{ header_text }}
+    {% else %}
+      <a role="menuitem" tabindex="-1" href="{% if route is defined %}{{ path(route, route_parameters) }}{% elseif uri is defined %}{{ uri }}{% else %}#{% endif %}">
+        {{ label }}
+      </a>
+    {% endif %}
+
+    {% if is_sub_menu %}
+      <ul class="dropdown-menu" role="menu">
+        {% for child in children %}
+          {% set child = child|merge({ 'index': loop.index0 }) %}
+          {% include '@CamurphyBootstrapMenu/menuItem.html.twig' with child only %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </li>
+{% endif %}

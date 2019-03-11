@@ -1,0 +1,12 @@
+<li class="dropdown{% if isActive|default(false) %} active{% endif %}">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-submenu role="button" aria-haspopup="false" aria-expanded="false">
+    {{ label }}
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    {% for child in children %}
+      {% set child = child|merge({ 'index': loop.index0 }) %}
+      {% include '@CamurphyBootstrapMenu/menuItem.html.twig' with child only %}
+    {% endfor %}
+  </ul>
+</li>

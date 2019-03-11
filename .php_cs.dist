@@ -1,0 +1,45 @@
+<?php
+
+declare(strict_types=1);
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@DoctrineAnnotation' => true,
+        '@PHP70Migration:risky' => true,
+        '@PHP71Migration:risky' => true,
+        '@PhpCsFixer' => true,
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        'align_multiline_comment' => true,
+        'array_indentation' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'compact_nullable_typehint' => true,
+        'concat_space' => ['spacing' => 'one'],
+        'explicit_indirect_variable' => true,
+        'explicit_string_variable' => true,
+        'fully_qualified_strict_types' => true,
+        'logical_operators' => true,
+        'mb_str_functions' => true,
+        'method_chaining_indentation' => true,
+        'multiline_comment_opening_closing' => true,
+        'multiline_whitespace_before_semicolons' => true,
+        'no_alternative_syntax' => true,
+        'no_null_property_initialization' => true,
+        'no_unreachable_default_argument_value' => true,
+        'no_unset_on_property' => true,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'ordered_class_elements' => true,
+        'ordered_imports' => true,
+        'return_assignment' => true,
+        'strict_param' => true,
+    ])
+    ->setRiskyAllowed(true)
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__ . '/Definition')
+            ->in(__DIR__ . '/DependencyInjection')
+            ->in(__DIR__ . '/Loader')
+            ->in(__DIR__ . '/Menu')
+            ->in(__DIR__ . '/Twig')
+   );
