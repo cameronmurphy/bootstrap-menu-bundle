@@ -1,6 +1,6 @@
 <?php
 
-namespace Camurphy;
+namespace Camurphy\BootstrapMenuBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
