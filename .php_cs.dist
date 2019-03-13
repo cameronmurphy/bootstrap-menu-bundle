@@ -42,4 +42,5 @@ return PhpCsFixer\Config::create()
             ->in(__DIR__ . '/Loader')
             ->in(__DIR__ . '/Menu')
             ->in(__DIR__ . '/Twig')
+            ->notPath('DependencyInjection/Configuration.php')
    );
