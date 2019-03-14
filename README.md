@@ -48,7 +48,7 @@ Result:
 ![Example 1](https://user-images.githubusercontent.com/1300032/54358791-4f00fb00-46b5-11e9-817c-4b8101305a2b.png)
 
 ### Route parameters
-Perhaps your route needs parameters to render. You can also specify these.
+Perhaps your route requires parameters. You can also specify these.
 ```yaml
 bootstrap_menu:
   menus:
