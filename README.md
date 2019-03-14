@@ -8,7 +8,7 @@ A simple [Symfony 4](https://symfony.com/) bundle for defining your application'
 Installation
 ------------
 ```bash
-$ composer install camurphy/bootstrap-menu-bundle
+$ composer require camurphy/bootstrap-menu-bundle
 ```
 
 Usage
