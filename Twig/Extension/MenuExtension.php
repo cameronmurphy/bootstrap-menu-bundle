@@ -51,7 +51,7 @@ class MenuExtension extends AbstractExtension
         $securityExtension = $environment->getExtension(SecurityExtension::class);
 
         // Strip out items that shouldn't be displayed
-        foreach ($menuDefinition as $index => &$menuItem) {
+        foreach ($menuDefinition['items'] as $index => &$menuItem) {
             if ($this->recursivePrune($menuItem, $securityExtension)) {
                 unset($menuDefinition[$index]);
             }
@@ -59,11 +59,11 @@ class MenuExtension extends AbstractExtension
 
         unset($menuItem);
 
-        foreach ($menuDefinition as $menuItem) {
-            if (\count($menuItem['children']) > 0) {
-                $html .= $environment->render('@CamurphyBootstrapMenu/dropDown.html.twig', $menuItem);
+        foreach ($menuDefinition['items'] as $menuItem) {
+            if (\array_key_exists('items', $menuItem) && \count($menuItem['items']) > 0) {
+                $html .= $environment->render('@BootstrapMenu/dropDown.html.twig', $menuItem);
             } else {
-                $html .= $environment->render('@CamurphyBootstrapMenu/link.html.twig', $menuItem);
+                $html .= $environment->render('@BootstrapMenu/link.html.twig', $menuItem);
             }
         }
 
@@ -97,19 +97,19 @@ class MenuExtension extends AbstractExtension
             }
         }
 
-        if (\count($menuItem['items']) > 0) {
-            $childCount = 0;
+        if (\array_key_exists('items', $menuItem) && \count($menuItem['items']) > 0) {
+            $itemCount = 0;
 
             $currentSeparator = null;
             $separatorsInUse = [];
 
-            foreach ($menuItem['items'] as $childKey => &$childMenuItem) {
-                if ($this->recursivePrune($childMenuItem, $securityExtension)) {
-                    unset($menuItem['items'][$childKey]);
-                } elseif ($childMenuItem['is_separator']) {
-                    $currentSeparator = $childKey;
+            foreach ($menuItem['items'] as $subItemKey => &$subMenuItem) {
+                if ($this->recursivePrune($subMenuItem, $securityExtension)) {
+                    unset($menuItem['items'][$subItemKey]);
+                } elseif ($subMenuItem['is_separator']) {
+                    $currentSeparator = $subItemKey;
                 } else {
-                    ++$childCount;
+                    ++$itemCount;
 
                     if (!\in_array($currentSeparator, $separatorsInUse, true)) {
                         $separatorsInUse[] = $currentSeparator;
@@ -117,16 +117,16 @@ class MenuExtension extends AbstractExtension
                 }
             }
 
-            unset($childMenuItem);
+            unset($subMenuItem);
 
             // Prune unused separators
-            foreach ($menuItem['items'] as $childKey => $childMenuItem) {
-                if ($childMenuItem['is_separator'] && !\in_array($childKey, $separatorsInUse, true)) {
-                    unset($menuItem['items'][$childKey]);
+            foreach ($menuItem['items'] as $subItemKey => $subMenuItem) {
+                if ($subMenuItem['is_separator'] && !\in_array($subItemKey, $separatorsInUse, true)) {
+                    unset($menuItem['items'][$subItemKey]);
                 }
             }
 
-            if (0 == $childCount) {
+            if (0 == $itemCount) {
                 return true;
             }
         }
