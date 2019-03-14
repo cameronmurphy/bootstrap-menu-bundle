@@ -74,7 +74,7 @@ class MenuExtension extends AbstractExtension
      *
      * @return bool Whether the current item should be pruned from the menu
      */
-    private function recursivePrune(array &$menuItem, SecurityExtension $securityExtension)
+    private function recursivePrune(array &$menuItem, SecurityExtension $securityExtension): bool
     {
         if (!$menuItem['display']) {
             return true;
