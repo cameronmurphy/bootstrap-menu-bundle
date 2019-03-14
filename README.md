@@ -96,7 +96,7 @@ Result:
 ![Example 2](https://user-images.githubusercontent.com/1300032/54359374-9fc52380-46b6-11e9-9c0c-bea934d9f0a2.png)
 
 #### Dividers
-Dropdowns can also contain [dividers](https://getbootstrap.com/docs/4.3/components/dropdowns/#dividers) to separate groups of related menu
+Dropdowns can also contain [Dividers](https://getbootstrap.com/docs/4.3/components/dropdowns/#dividers) to separate groups of related menu
 items.
 ```yaml
 bootstrap_menu:
@@ -176,8 +176,8 @@ For a user without `ROLE_ADMINISTRATOR` they would see:
 
 ![Example 5](https://user-images.githubusercontent.com/1300032/54361573-60e59c80-46bb-11e9-89db-669a02f4b82b.png)
 
-The reason for this is Bootstrap Menu Bundle intelligently prunes Dropdowns to remove unnecessary dividers. Because the user is not
-permitted to see any items between 'Password Stuff' and 'Other Stuff' the 'Password Stuff' divider is also pruned.
+The reason for this is Bootstrap Menu Bundle intelligently prunes Dropdowns to remove unnecessary Dividers. Because the user is not
+permitted to see any items between 'Password Stuff' and 'Other Stuff', the 'Password Stuff' Divider is also pruned.
 
 Security can also be configured at a Dropdown level. Perhaps only administrators are allowed to use the 'Users' menu.
 ```yaml
