@@ -1,14 +1,13 @@
 {% filter spaceless %}
-  <li class="dropdown{% if isActive|default(false) %} active{% endif %}">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-submenu role="button" aria-haspopup="false" aria-expanded="false">
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {{ label }}
-      <span class="caret"></span>
     </a>
-    <ul class="dropdown-menu" role="menu">
+    <div class="dropdown-menu">
       {% for menuItem in items %}
         {% set menuItem = menuItem|merge({ 'index': loop.index0 }) %}
-        {% include '@BootstrapMenu/menuItem.html.twig' with menuItem only %}
+        {% include '@BootstrapMenu/dropDownItem.html.twig' with menuItem only %}
       {% endfor %}
-    </ul>
+    </div>
   </li>
 {% endfilter %}

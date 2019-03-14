@@ -1,7 +1,7 @@
 {% filter spaceless %}
   {% if label is defined and (route is defined or uri is defined) %}
-  <li{% if isActive|default(false) %} class="active"{% endif %}>
-    <a href="{% if route is defined %}{{ path(route, route_parameters) }}{% elseif uri is defined %}{{ uri }}{% else %}#{% endif %}">
+  <li class="nav-item">
+    <a class="nav-link" {% include '@BootstrapMenu/dropDown.html.twig' %}>
       {{ label }}
     </a>
   </li>

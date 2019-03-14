@@ -1,0 +1,15 @@
+{% filter spaceless %}
+  {% if is_separator %}
+    {% if index > 0 %}
+      <div class="dropdown-divider"></div>
+    {% endif %}
+
+    {% if label is defined %}
+      <h6 class="dropdown-header">{{ label }}</h6>
+    {% endif %}
+  {% else %}
+    <a class="dropdown-item" {% include '@BootstrapMenu/href.html.twig' %}>
+      {{ label }}
+    </a>
+  {% endif %}
+{% endfilter %}
