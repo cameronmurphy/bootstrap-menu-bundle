@@ -21,10 +21,7 @@
 
     <filter>
         <whitelist>
-            <directory>Definition</directory>
             <directory>DependencyInjection</directory>
-            <directory>Loader</directory>
-            <directory>Menu</directory>
             <directory>Twig</directory>
         </whitelist>
     </filter>

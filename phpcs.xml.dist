@@ -2,10 +2,7 @@
 <ruleset name="Provisor">
     <!-- Use PSR-2 as a base -->
     <rule ref="PSR2"/>
-    <file>Definition</file>
     <file>DependencyInjection</file>
-    <file>Loader</file>
-    <file>Menu</file>
     <file>Twig</file>
 
     <!-- Scan only PHP files -->
