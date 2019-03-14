@@ -173,6 +173,7 @@ bootstrap_menu:
               route: 'app_logout'
 ```
 For a user without `ROLE_ADMINISTRATOR` they would see:
+
 ![Example 5](https://user-images.githubusercontent.com/1300032/54361573-60e59c80-46bb-11e9-89db-669a02f4b82b.png)
 
 The reason for this is Bootstrap Menu Bundle intelligently prunes Dropdowns to remove unnecessary dividers. Because the user is not
