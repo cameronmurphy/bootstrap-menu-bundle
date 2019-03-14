@@ -1,1 +1,1 @@
-href="{% if route is defined %}{{ path(route, route_parameters) }}{% elseif uri is defined %}{{ uri }}{% else %}#{% endif %}"
+href="{% if route is defined %}{{ path(route, route_parameters) }}{% elseif url is defined %}{{ url }}{% else %}#{% endif %}"

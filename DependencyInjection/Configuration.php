@@ -45,15 +45,13 @@ class Configuration implements ConfigurationInterface
     {
         $builder
             ->scalarNode('label')->end()
-            ->booleanNode('is_separator')->defaultFalse()->end()
-            ->scalarNode('header_text')->end()
+            ->booleanNode('is_divider')->defaultFalse()->end()
             ->scalarNode('route')->end()
             ->arrayNode('route_parameters')
                 ->prototype('variable')
                 ->end()
             ->end()
-            ->scalarNode('uri')->end()
-            ->booleanNode('display')->defaultTrue()->end()
+            ->scalarNode('url')->end()
             ->arrayNode('roles')
                 ->prototype('scalar')
                 ->end()

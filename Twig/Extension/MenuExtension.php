@@ -53,7 +53,7 @@ class MenuExtension extends AbstractExtension
         // Strip out items that shouldn't be displayed
         foreach ($menuDefinition['items'] as $index => &$menuItem) {
             if ($this->recursivePrune($menuItem, $securityExtension)) {
-                unset($menuDefinition[$index]);
+                unset($menuDefinition['items'][$index]);
             }
         }
 
@@ -78,10 +78,6 @@ class MenuExtension extends AbstractExtension
      */
     private function recursivePrune(array &$menuItem, SecurityExtension $securityExtension): bool
     {
-        if (!$menuItem['display']) {
-            return true;
-        }
-
         if (\count($menuItem['roles']) > 0) {
             $granted = false;
 
@@ -106,7 +102,7 @@ class MenuExtension extends AbstractExtension
             foreach ($menuItem['items'] as $subItemKey => &$subMenuItem) {
                 if ($this->recursivePrune($subMenuItem, $securityExtension)) {
                     unset($menuItem['items'][$subItemKey]);
-                } elseif ($subMenuItem['is_separator']) {
+                } elseif ($subMenuItem['is_divider']) {
                     $currentSeparator = $subItemKey;
                 } else {
                     ++$itemCount;
@@ -121,7 +117,7 @@ class MenuExtension extends AbstractExtension
 
             // Prune unused separators
             foreach ($menuItem['items'] as $subItemKey => $subMenuItem) {
-                if ($subMenuItem['is_separator'] && !\in_array($subItemKey, $separatorsInUse, true)) {
+                if ($subMenuItem['is_divider'] && !\in_array($subItemKey, $separatorsInUse, true)) {
                     unset($menuItem['items'][$subItemKey]);
                 }
             }
