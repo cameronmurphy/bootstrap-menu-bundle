@@ -30,11 +30,13 @@ class MenuExtension extends AbstractExtension
 
     /**
      * @param TwigEnvironment $environment
-     * @param string $menuName
-     * @return string
+     * @param string          $menuName
+     *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
+     *
+     * @return string
      */
     public function renderMenu(TwigEnvironment $environment, string $menuName): string
     {
