@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Camurphy\BootstrapMenuBundle\Twig\Extension;
 
-use Camurphy\BootstrapMenuBundle\Menu\Menu;
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
 use Twig\Environment as TwigEnvironment;
 use Twig\Extension\AbstractExtension;
@@ -13,39 +12,41 @@ use Twig\TwigFunction;
 class MenuExtension extends AbstractExtension
 {
     /**
-     * @var Menu
+     * @var string[]
      */
-    private $menu;
+    private $menus;
 
-    public function __construct(Menu $menu)
+    public function __construct(array $menus)
     {
-        $this->menu = $menu;
+        $this->menus = $menus;
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('render_menu', [$this, 'renderMenu'], ['needs_environment' => true, 'is_safe' => ['html']]),
+            new TwigFunction('render_bootstrap_menu', [$this, 'renderMenu'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
     }
 
     /**
      * @param TwigEnvironment $environment
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     * @throws \Exception
-     *
+     * @param string $menuName
      * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function renderMenu(TwigEnvironment $environment)
+    public function renderMenu(TwigEnvironment $environment, string $menuName): string
     {
         $html = '';
 
+        if (!\array_key_exists($menuName, $this->menus)) {
+            throw new \RuntimeException(sprintf('Menu %s is not configured', $menuName));
+        }
+
+        $menuDefinition = $this->menus[$menuName];
         /** @var SecurityExtension $securityExtension */
         $securityExtension = $environment->getExtension(SecurityExtension::class);
-        $menuDefinition = $this->menu->getDefinition();
 
         // Strip out items that shouldn't be displayed
         foreach ($menuDefinition as $index => &$menuItem) {
@@ -94,15 +95,15 @@ class MenuExtension extends AbstractExtension
             }
         }
 
-        if (\count($menuItem['children']) > 0) {
+        if (\count($menuItem['items']) > 0) {
             $childCount = 0;
 
             $currentSeparator = null;
             $separatorsInUse = [];
 
-            foreach ($menuItem['children'] as $childKey => &$childMenuItem) {
+            foreach ($menuItem['items'] as $childKey => &$childMenuItem) {
                 if ($this->recursivePrune($childMenuItem, $securityExtension)) {
-                    unset($menuItem['children'][$childKey]);
+                    unset($menuItem['items'][$childKey]);
                 } elseif ($childMenuItem['is_separator']) {
                     $currentSeparator = $childKey;
                 } else {
@@ -117,9 +118,9 @@ class MenuExtension extends AbstractExtension
             unset($childMenuItem);
 
             // Prune unused separators
-            foreach ($menuItem['children'] as $childKey => $childMenuItem) {
+            foreach ($menuItem['items'] as $childKey => $childMenuItem) {
                 if ($childMenuItem['is_separator'] && !\in_array($childKey, $separatorsInUse, true)) {
-                    unset($menuItem['children'][$childKey]);
+                    unset($menuItem['items'][$childKey]);
                 }
             }
 

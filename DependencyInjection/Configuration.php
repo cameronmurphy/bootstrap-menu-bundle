@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Camurphy\BootstrapMenuBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -13,64 +14,73 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('bootstrap_menu');
-        $rootNode = method_exists(TreeBuilder::class, 'getRootNode') ? $treeBuilder->getRootNode() : $treeBuilder->root('swiftmailer');
+        /** @var \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $rootNode */
+        $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->beforeNormalization()
-                ->ifNull()
-                ->thenEmptyArray()
-            ->end()
-            ->children()
-                ->append($this->getMenusNode())
-            ->end();
+        $this->addMenusNode($rootNode);
 
         return $treeBuilder;
     }
 
-    private function getMenusNode(): NodeDefinition
+    private function addMenusNode(ArrayNodeDefinition $rootNode): void
     {
-        $treeBuilder = new TreeBuilder('menus');
-        $node = method_exists(TreeBuilder::class, 'getRootNode') ? $treeBuilder->getRootNode() : $treeBuilder->root('mailers');
+        $menuItemNodeBuilder = $rootNode
+            ->fixXmlConfig('menu')
+            ->children()
+                ->arrayNode('menus')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->disallowNewKeysInSubsequentConfigs()
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->arrayNode('items')
+                                ->prototype('array')
+                                    ->children();
 
-        $node
-            ->requiresAtLeastOneElement()
-            ->useAttributeAsKey('name')
-            ->prototype('array')
-                ->children()
-                    ->scalarNode('label')->end()
-                    ->booleanNode('is_separator')->defaultFalse()->end()
-                    ->scalarNode('header_text')->end()
-                    ->scalarNode('route')->end()
-                    ->arrayNode('route_parameters')
-                        ->prototype('variable')
-                        ->end()
-                    ->end()
-                    ->scalarNode('uri')->end()
-                    ->booleanNode('display')->defaultTrue()->end()
-                    ->integerNode('order')->end()
-                    ->arrayNode('attributes')
-                        ->prototype('variable')
-                        ->end()
-                    ->end()
-                    ->arrayNode('link_attributes')
-                        ->prototype('variable')
-                        ->end()
-                    ->end()
-                    ->arrayNode('children_attributes')
-                        ->prototype('variable')
-                        ->end()
-                    ->end()
-                    ->arrayNode('label_attributes')
-                        ->prototype('variable')
-                        ->end()
-                    ->end()
-                    ->arrayNode('roles')
-                        ->prototype('scalar')
-                        ->end()
-                    ->end()
+        $this->configureItemsNode($menuItemNodeBuilder);
+    }
+
+    private function configureItemsNode(NodeBuilder $builder, int $depth = 1): void
+    {
+        $builder
+            ->scalarNode('label')->end()
+            ->booleanNode('is_separator')->defaultFalse()->end()
+            ->scalarNode('header_text')->end()
+            ->scalarNode('route')->end()
+            ->arrayNode('route_parameters')
+                ->prototype('variable')
+                ->end()
+            ->end()
+            ->scalarNode('uri')->end()
+            ->booleanNode('display')->defaultTrue()->end()
+            ->arrayNode('attributes')
+                ->prototype('variable')
+                ->end()
+            ->end()
+            ->arrayNode('link_attributes')
+                ->prototype('variable')
+                ->end()
+            ->end()
+            ->arrayNode('label_attributes')
+                ->prototype('variable')
+                ->end()
+            ->end()
+            ->arrayNode('roles')
+                ->prototype('scalar')
                 ->end()
             ->end();
 
-        return $node;
+        if ($depth > 0) {
+            $itemsNodeBuilder = $builder
+                ->arrayNode('items')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children();
+
+            $this->configureItemsNode($itemsNodeBuilder, $depth - 1);
+
+            $itemsNodeBuilder->end();
+        }
     }
 }

@@ -37,10 +37,9 @@ return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->in(__DIR__ . '/Definition')
             ->in(__DIR__ . '/DependencyInjection')
-            ->in(__DIR__ . '/Loader')
-            ->in(__DIR__ . '/Menu')
             ->in(__DIR__ . '/Twig')
-            ->notPath('DependencyInjection/Configuration.php')
+            // Disable this file until PHP-CS-Fixer can be useful for the builder pattern or indentation formatting can be disabled
+            // for a block
+            ->notName('Configuration.php')
    );

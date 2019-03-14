@@ -12,8 +12,7 @@
     "require": {
         "php": "^7.1.3",
         "symfony/config": "3.3|^4.0",
-        "symfony/twig-bundle": "^4.2",
-        "symfony/yaml": "^4.2"
+        "symfony/twig-bundle": "^4.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
@@ -26,6 +25,7 @@
         "psr-4": { "Camurphy\\BootstrapMenuBundle\\": "" }
     },
     "scripts": {
+        "fix": "php-cs-fixer fix --ansi",
         "lint": [
             "phpcs",
             "php-cs-fixer fix --dry-run --diff --diff-format udiff --ansi"
