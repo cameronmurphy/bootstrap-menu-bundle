@@ -29,6 +29,7 @@
         "lint": [
             "phpcs",
             "php-cs-fixer fix --dry-run --diff --diff-format udiff --ansi"
-        ]
+        ],
+        "test": "phpunit"
     }
 }
