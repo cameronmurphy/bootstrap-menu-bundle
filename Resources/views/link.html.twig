@@ -2,7 +2,7 @@
   {% if label is defined and (route is defined or url is defined) %}
   <li class="nav-item">
     <a class="nav-link" {% include '@BootstrapMenu/href.html.twig' %}>
-      {{ label }}
+      {{- label -}}
     </a>
   </li>
   {% endif %}
