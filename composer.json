@@ -33,7 +33,7 @@
             "phpcs",
             "php-cs-fixer fix --dry-run --diff --diff-format udiff --ansi"
         ],
-        "test": "phpunit",
-        "test-update-snapshots": "phpunit -d --update-snapshots"
+        "test": "phpunit --colors=always",
+        "test-update-snapshots": "phpunit --colors=always -d --update-snapshots"
     }
 }
