@@ -94,7 +94,7 @@ class MenuExtensionTest extends TestCase
                     'roles' => [],
                 ],
                 'link_1' => [
-                    'label' => 'Link 1 (this should render a link)',
+                    'label' => 'Link 1 (this should render a nav-link)',
                     'route' => 'app_link_1_route',
                     'route_parameters' => [],
                     'roles' => [],
