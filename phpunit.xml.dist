@@ -29,4 +29,8 @@
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
+
+    <extensions>
+        <extension class="Camurphy\BootstrapMenuBundle\Hook\BypassFinalHook"/>
+    </extensions>
 </phpunit>
