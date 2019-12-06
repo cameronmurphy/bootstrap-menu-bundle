@@ -74,9 +74,18 @@ class MenuExtension extends AbstractExtension
             $granted = false;
 
             foreach ($menuItem['roles'] as $role) {
-                if ($securityExtension->isGranted($role)) {
-                    $granted = true;
-                    break;
+                 if ("!" === substr($role, 0, 1)) {
+                    $role = substr($role, 1);
+
+                    if ($securityExtension->isGranted($role)) {
+                        $granted = false;
+
+                        break;
+                    }
+                } else {
+                    if ($securityExtension->isGranted($role)) {
+                        $granted = true;
+                    }
                 }
             }
 
