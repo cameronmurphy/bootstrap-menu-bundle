@@ -13,7 +13,7 @@ $ composer require camurphy/bootstrap-menu-bundle
 
 Usage
 -----
-Your menus are defined in `app/config/packages/bootstrap_menu.yaml`.
+Your menus are defined in `config/packages/bootstrap_menu.yaml`.
 
 Below is a very simple menu called `main` with with only a single 'Logout' link.
 ```yaml
