@@ -76,6 +76,7 @@ class MenuExtension extends AbstractExtension
             foreach ($menuItem['roles'] as $role) {
                 if ($securityExtension->isGranted($role)) {
                     $granted = true;
+
                     break;
                 }
             }
@@ -114,7 +115,7 @@ class MenuExtension extends AbstractExtension
                 }
             }
 
-            if (0 == $itemCount) {
+            if (0 === $itemCount) {
                 return true;
             }
         }
