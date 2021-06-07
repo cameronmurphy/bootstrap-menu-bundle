@@ -1,0 +1,19 @@
+{% set data_attribute_name = 'data-bs-toggle' %}
+
+{% if bootstrap_version == 4 %}
+  {% set data_attribute_name = 'data-toggle' %}
+{% endif %}
+
+{% apply spaceless %}
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" {{ data_attribute_name }}="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{- menu_item.label -}}
+    </a>
+    <div class="dropdown-menu">
+      {% for menu_item in menu_item.items %}
+        {% set menu_item = menu_item|merge({ 'index': loop.index0 }) %}
+        {% include '@BootstrapMenu/dropdown_item.html.twig' with menu_item %}
+      {% endfor %}
+    </div>
+  </li>
+{% endapply %}

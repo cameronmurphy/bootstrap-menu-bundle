@@ -17,7 +17,7 @@ use Twig\TwigFunction;
  * @internal
  * @coversNothing
  */
-class MenuExtensionTest extends TestCase
+final class MenuExtensionTest extends TestCase
 {
     use MatchesSnapshots;
 
@@ -184,7 +184,7 @@ class MenuExtensionTest extends TestCase
         ],
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->rootPath = realpath(__DIR__ . '/../../../');
     }
@@ -194,12 +194,12 @@ class MenuExtensionTest extends TestCase
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function testRenderMenu(): void
+    public function testRenderMenuBootstrap4(): void
     {
         /** @var TwigEnvironment $mockTwigEnvironment */
         $mockTwigEnvironment = $this->mockTwigEnvironment();
 
-        $menuExtension = new MenuExtension(self::$mockMenus);
+        $menuExtension = new MenuExtension(self::$mockMenus, 4);
         $menu = $menuExtension->renderMenu($mockTwigEnvironment, 'main');
 
         $this->assertMatchesSnapshot($menu);
@@ -207,35 +207,53 @@ class MenuExtensionTest extends TestCase
 
     /**
      * @throws \Twig\Error\LoaderError
-     *
-     * @return MockObject
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function testRenderMenuBootstrap5(): void
+    {
+        /** @var TwigEnvironment $mockTwigEnvironment */
+        $mockTwigEnvironment = $this->mockTwigEnvironment();
+
+        $menuExtension = new MenuExtension(self::$mockMenus, 5);
+        $menu = $menuExtension->renderMenu($mockTwigEnvironment, 'main');
+
+        $this->assertMatchesSnapshot($menu);
+    }
+
+    /**
+     * @throws \Twig\Error\LoaderError
      */
     private function mockTwigEnvironment(): MockObject
     {
         $loader = new FilesystemLoader([], $this->rootPath);
         $loader->addPath('Resources/views', 'BootstrapMenu');
 
-        /** @var \Twig\Environment|MockObject $twigMock */
+        /** @var MockObject|\Twig\Environment $twigMock */
         $twigMock = $this->getMockBuilder(TwigEnvironment::class)
             ->setConstructorArgs([$loader])
             ->setMethods(['getExtension'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $securityExtensionMock = $this->getMockBuilder(SecurityExtension::class)
             ->disableOriginalConstructor()
             ->setMethods(['isGranted', 'getDefaultStrategy'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $securityExtensionMock
             ->method('isGranted')
             ->willReturnCallback(function ($expression) {
                 return 'ROLE_USER' === $expression;
-            });
+            })
+        ;
 
         $twigMock
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getExtension')
-            ->willReturn($securityExtensionMock);
+            ->willReturn($securityExtensionMock)
+        ;
 
         $pathFunction = new TwigFunction('path', function ($route, $routeParameters = []): string {
             $path = '/' . str_replace('_', '-', $route);

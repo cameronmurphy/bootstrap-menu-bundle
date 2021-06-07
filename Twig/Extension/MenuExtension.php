@@ -15,10 +15,12 @@ class MenuExtension extends AbstractExtension
      * @var string[]
      */
     private $menus;
+    private $bootstrapVersion;
 
-    public function __construct(array $menus)
+    public function __construct(array $menus, int $bootstrapVersion)
     {
         $this->menus = $menus;
+        $this->bootstrapVersion = $bootstrapVersion;
     }
 
     public function getFunctions(): array
@@ -55,10 +57,15 @@ class MenuExtension extends AbstractExtension
         unset($menuItem);
 
         foreach ($menuDefinition['items'] as $menuItem) {
+            $variables = [
+                'bootstrap_version' => $this->bootstrapVersion,
+                'menu_item' => $menuItem,
+            ];
+
             if (\array_key_exists('items', $menuItem) && \count($menuItem['items']) > 0) {
-                $html .= $environment->render('@BootstrapMenu/dropDown.html.twig', $menuItem);
+                $html .= $environment->render('@BootstrapMenu/dropdown.html.twig', $variables);
             } else {
-                $html .= $environment->render('@BootstrapMenu/link.html.twig', $menuItem);
+                $html .= $environment->render('@BootstrapMenu/link.html.twig', $variables);
             }
         }
 
