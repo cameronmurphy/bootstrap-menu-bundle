@@ -22,6 +22,7 @@ class BootstrapMenuExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('bootstrap_menu.version', $config['version']);
         $container->setParameter('bootstrap_menu.menus', $config['menus']);
     }
 }

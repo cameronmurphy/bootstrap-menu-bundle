@@ -3,7 +3,8 @@ Bootstrap Menu Bundle
 [![Codeship Status for cameronmurphy/bootstrap-menu-bundle](https://app.codeship.com/projects/bc4e2190-2c19-0137-e09f-1694ad127b99/status?branch=master)](https://app.codeship.com/projects/331254)
 
 A simple [Symfony](https://symfony.com/) bundle for defining your application's menus in configuration and rendering them to work with
-[Bootstrap 4](https://getbootstrap.com/docs)'s [Navbar](https://getbootstrap.com/docs/4.4/components/navbar) component.
+[Bootstrap](https://getbootstrap.com/)'s [Navbar](https://getbootstrap.com/docs/5.0/components/navbar/) component. This bundle supports
+Bootstrap versions 4 and 5.
 
 Installation
 ------------
@@ -18,6 +19,7 @@ Your menus are defined in `config/packages/bootstrap_menu.yaml`.
 Below is a very simple menu called `main` with with only a single 'Logout' link.
 ```yaml
 bootstrap_menu:
+  version: 5 # Optional, defaults to Bootstrap 5
   menus:
     main:
       items:
@@ -27,20 +29,22 @@ bootstrap_menu:
 ```
 
 Then within your template you can render your menu in a Navbar by passing the name of your menu to `render_bootstrap_menu`. This markup is
-taken from the [Bootstrap starter template](https://getbootstrap.com/docs/4.3/examples/starter-template/).
+taken from the [Bootstrap Navbar Fixed example](https://getbootstrap.com/docs/5.0/examples/navbar-fixed/). The Bootstrap 4 version is
+[here](https://getbootstrap.com/docs/4.6/examples/navbar-fixed)
 ```twig
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-          aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-      {{ render_bootstrap_menu('main') }}
-    </ul>
-  </div>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        {{ render_bootstrap_menu('main') }}
+      </ul>
+    </div>
 </nav>
 ```
 Result:

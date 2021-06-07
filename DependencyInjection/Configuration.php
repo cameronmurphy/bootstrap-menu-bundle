@@ -26,6 +26,11 @@ class Configuration implements ConfigurationInterface
         $menuItemNodeBuilder = $rootNode
             ->fixXmlConfig('menu')
             ->children()
+                ->integerNode('version')
+                    ->max(5)
+                    ->min(4)
+                    ->defaultValue(5)
+                ->end()
                 ->arrayNode('menus')
                     ->requiresAtLeastOneElement()
                     ->disallowNewKeysInSubsequentConfigs()
