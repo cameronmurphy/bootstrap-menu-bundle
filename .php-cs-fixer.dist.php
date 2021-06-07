@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+
+return $config
     ->setRules([
         '@PHP71Migration' => true,
         '@PHP71Migration:risky' => true,
@@ -19,4 +21,5 @@ return PhpCsFixer\Config::create()
             // Disable this file until PHP-CS-Fixer can be useful for the builder pattern or indentation formatting can be disabled
             // for a block
             ->notName('Configuration.php')
-   );
+    )
+;
