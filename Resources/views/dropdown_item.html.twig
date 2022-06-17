@@ -1,0 +1,15 @@
+{% apply spaceless %}
+  {% if menu_item.is_divider %}
+    {% if menu_item.index > 0 %}
+      <div class="dropdown-divider"></div>
+    {% endif %}
+
+    {% if menu_item.label is defined %}
+      <h6 class="dropdown-header">{{ menu_item.label }}</h6>
+    {% endif %}
+  {% else %}
+    <a class="dropdown-item" {% include '@BootstrapMenu/href.html.twig' with { menu_item } %}>
+      {{- menu_item.label -}}
+    </a>
+  {% endif %}
+{% endapply %}

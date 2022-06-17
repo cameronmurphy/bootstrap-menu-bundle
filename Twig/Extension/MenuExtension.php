@@ -15,10 +15,12 @@ class MenuExtension extends AbstractExtension
      * @var string[]
      */
     private $menus;
+    private $bootstrapVersion;
 
-    public function __construct(array $menus)
+    public function __construct(array $menus, int $bootstrapVersion)
     {
         $this->menus = $menus;
+        $this->bootstrapVersion = $bootstrapVersion;
     }
 
     public function getFunctions(): array
@@ -42,6 +44,7 @@ class MenuExtension extends AbstractExtension
         }
 
         $menuDefinition = $this->menus[$menuName];
+
         /** @var SecurityExtension $securityExtension */
         $securityExtension = $environment->getExtension(SecurityExtension::class);
 
@@ -55,10 +58,15 @@ class MenuExtension extends AbstractExtension
         unset($menuItem);
 
         foreach ($menuDefinition['items'] as $menuItem) {
+            $variables = [
+                'bootstrap_version' => $this->bootstrapVersion,
+                'menu_item' => $menuItem,
+            ];
+
             if (\array_key_exists('items', $menuItem) && \count($menuItem['items']) > 0) {
-                $html .= $environment->render('@BootstrapMenu/dropDown.html.twig', $menuItem);
+                $html .= $environment->render('@BootstrapMenu/dropdown.html.twig', $variables);
             } else {
-                $html .= $environment->render('@BootstrapMenu/link.html.twig', $menuItem);
+                $html .= $environment->render('@BootstrapMenu/link.html.twig', $variables);
             }
         }
 
@@ -74,18 +82,16 @@ class MenuExtension extends AbstractExtension
             $granted = false;
 
             foreach ($menuItem['roles'] as $role) {
-                 if ("!" === substr($role, 0, 1)) {
-                    $role = substr($role, 1);
+                if ('!' === substr($role, 0, 1)) {
+                    $role = ltrim($role, '!');
 
                     if ($securityExtension->isGranted($role)) {
-                        $granted = false;
-
                         break;
                     }
-                } else {
-                    if ($securityExtension->isGranted($role)) {
-                        $granted = true;
-                    }
+                } elseif ($securityExtension->isGranted($role)) {
+                    $granted = true;
+
+                    break;
                 }
             }
 
@@ -123,7 +129,7 @@ class MenuExtension extends AbstractExtension
                 }
             }
 
-            if (0 == $itemCount) {
+            if (0 === $itemCount) {
                 return true;
             }
         }

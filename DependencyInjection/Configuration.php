@@ -14,7 +14,6 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('bootstrap_menu');
-        /** @var \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addMenusNode($rootNode);
@@ -27,8 +26,12 @@ class Configuration implements ConfigurationInterface
         $menuItemNodeBuilder = $rootNode
             ->fixXmlConfig('menu')
             ->children()
+                ->integerNode('version')
+                    ->max(5)
+                    ->min(4)
+                    ->defaultValue(5)
+                ->end()
                 ->arrayNode('menus')
-                    ->isRequired()
                     ->requiresAtLeastOneElement()
                     ->disallowNewKeysInSubsequentConfigs()
                     ->useAttributeAsKey('name')
