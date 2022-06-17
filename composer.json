@@ -1,9 +1,9 @@
 {
     "name": "camurphy/bootstrap-menu-bundle",
-    "description": "Render Bootstrap 4 menus using Symfony",
+    "description": "Render Bootstrap menus using Symfony",
     "type": "symfony-bundle",
     "license": "MIT",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "authors": [
         {
             "name": "Cameron Murphy",
