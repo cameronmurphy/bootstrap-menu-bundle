@@ -15,6 +15,7 @@
         "ext-json": "*",
         "symfony/config": "^4.2|^5.0",
         "symfony/dependency-injection": "^4.2|^5.0",
+        "symfony/security-bundle": "^4.2|^5.0",
         "symfony/twig-bundle": "^4.2|^5.0"
     },
     "require-dev": {
