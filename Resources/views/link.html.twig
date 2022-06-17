@@ -1,8 +1,8 @@
 {% apply spaceless %}
-  {% if label is defined and (route is defined or url is defined) %}
+  {% if menu_item.label is defined and (menu_item.route is defined or menu_item.url is defined) %}
   <li class="nav-item">
-    <a class="nav-link" {% include '@BootstrapMenu/href.html.twig' %}>
-      {{- label -}}
+    <a class="nav-link" {% include '@BootstrapMenu/href.html.twig' with { menu_item } %}>
+      {{- menu_item.label -}}
     </a>
   </li>
   {% endif %}

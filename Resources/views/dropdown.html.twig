@@ -12,7 +12,7 @@
     <div class="dropdown-menu">
       {% for menu_item in menu_item.items %}
         {% set menu_item = menu_item|merge({ 'index': loop.index0 }) %}
-        {% include '@BootstrapMenu/dropdown_item.html.twig' with menu_item %}
+        {% include '@BootstrapMenu/dropdown_item.html.twig' with { menu_item } %}
       {% endfor %}
     </div>
   </li>
