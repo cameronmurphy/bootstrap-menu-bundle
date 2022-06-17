@@ -70,7 +70,7 @@ final class MenuExtensionTest extends TestCase
                     'roles' => [],
                 ],
                 'dropdown_menu_3' => [
-                    'label' => 'Dropdown Menu 3 (this whole menu should be pruned due to permissions)',
+                    'label' => 'Dropdown Menu 3 (this whole menu should be pruned due to lack of ROLE_ADMINISTRATOR role)',
                     'items' => [
                         'dropdown_item_5' => [
                             'label' => 'Dropdown Item 5',
@@ -146,7 +146,7 @@ final class MenuExtensionTest extends TestCase
                             'is_divider' => true,
                         ],
                         'dropdown_item_12' => [
-                            'label' => 'Dropdown Item 12 (should be pruned due to permissions)',
+                            'label' => 'Dropdown Item 12 (should be pruned due to due to lack of ROLE_ADMINISTRATOR role)',
                             'route' => 'app_dropdown_item_12_route',
                             'route_parameters' => [],
                             'roles' => ['ROLE_ADMINISTRATOR'],
@@ -168,7 +168,7 @@ final class MenuExtensionTest extends TestCase
                     'roles' => [],
                 ],
                 'dropdown_menu_5' => [
-                    'label' => 'Dropdown Menu 5 (should be pruned due to permissions)',
+                    'label' => 'Dropdown Menu 5 (should be pruned due to lack of ROLE_ADMINISTRATOR role)',
                     'items' => [
                         'dropdown_item_14' => [
                             'label' => 'Dropdown Item 14',
@@ -179,6 +179,25 @@ final class MenuExtensionTest extends TestCase
                         ],
                     ],
                     'roles' => ['ROLE_ADMINISTRATOR'],
+                ],
+                'dropdown_menu_6' => [
+                    'label' => 'Dropdown Menu 6 (should be pruned due to negated ROLE_SUPPORT role)',
+                    'items' => [
+                        'dropdown_item_15' => [
+                            'label' => 'Dropdown Item 15',
+                            'route' => 'app_dropdown_item_15_route',
+                            'route_parameters' => [],
+                            'roles' => [],
+                            'is_divider' => false,
+                        ],
+                    ],
+                    'roles' => ['!ROLE_SUPPORT', 'ROLE_USER'],
+                ],
+                'link_2' => [
+                    'label' => 'Link 2 (should be pruned due to negated ROLE_SUPPORT role)',
+                    'route' => 'app_link_2_route',
+                    'route_parameters' => [],
+                    'roles' => ['ROLE_USER', '!ROLE_SUPPORT'],
                 ],
             ],
         ],
@@ -245,7 +264,7 @@ final class MenuExtensionTest extends TestCase
         $securityExtensionMock
             ->method('isGranted')
             ->willReturnCallback(function ($expression) {
-                return 'ROLE_USER' === $expression;
+                return \in_array($expression, ['ROLE_USER', 'ROLE_SUPPORT'], true);
             })
         ;
 

@@ -79,23 +79,32 @@ class MenuExtension extends AbstractExtension
     private function recursivePrune(array &$menuItem, SecurityExtension $securityExtension): bool
     {
         if (\count($menuItem['roles']) > 0) {
-            $granted = false;
+            $negated = $granted = false;
 
             foreach ($menuItem['roles'] as $role) {
+                // Negated roles take precedence over regular roles, test them first.
                 if ('!' === substr($role, 0, 1)) {
                     $role = ltrim($role, '!');
 
                     if ($securityExtension->isGranted($role)) {
+                        $negated = true;
+
                         break;
                     }
-                } elseif ($securityExtension->isGranted($role)) {
-                    $granted = true;
-
-                    break;
                 }
             }
 
-            if (!$granted) {
+            if (!$negated) {
+                foreach ($menuItem['roles'] as $role) {
+                    if ('!' !== substr($role, 0, 1) && $securityExtension->isGranted($role)) {
+                        $granted = true;
+
+                        break;
+                    }
+                }
+            }
+
+            if (!$granted || $negated) {
                 return true;
             }
         }

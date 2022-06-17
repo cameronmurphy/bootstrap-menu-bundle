@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+1.5.0
+-----
+- Added ability to negate roles with an exclamation mark, fixes #4.
+
 1.4.0
 -----
 - Added support for Symfony 6.

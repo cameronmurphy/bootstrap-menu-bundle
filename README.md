@@ -200,3 +200,20 @@ bootstrap_menu:
               label: 'New User'
               route: 'app_new_user'
 ```
+
+##### Negating roles
+You may also hide menu items from users that have a certain role by prefixing the role with an exclamation mark. This will take precedence
+over included roles. In the example below, if they have both `ROLE_SUPPORT` and `ROLE_USER` they will not see the menu item.
+```yaml
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        users:
+          label: 'Users'
+          roles: [ '!ROLE_SUPPORT', 'ROLE_USER' ]
+          items:
+            user_list:
+              label: 'Users'
+              route: 'app_user_list'
+```
