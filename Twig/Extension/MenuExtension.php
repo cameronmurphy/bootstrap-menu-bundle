@@ -44,6 +44,7 @@ class MenuExtension extends AbstractExtension
         }
 
         $menuDefinition = $this->menus[$menuName];
+
         /** @var SecurityExtension $securityExtension */
         $securityExtension = $environment->getExtension(SecurityExtension::class);
 
