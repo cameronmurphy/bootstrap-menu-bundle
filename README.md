@@ -45,6 +45,7 @@ taken from the [Bootstrap Navbar Fixed example](https://getbootstrap.com/docs/5.
         {{ render_bootstrap_menu('main') }}
       </ul>
     </div>
+  </div>
 </nav>
 ```
 Result:
