@@ -6,11 +6,11 @@ $config = new PhpCsFixer\Config();
 
 return $config
     ->setRules([
-        '@PHP71Migration' => true,
-        '@PHP71Migration:risky' => true,
+        '@PHP81Migration' => true,
+        '@PHP80Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-        '@PHPUnit75Migration:risky' => true,
+        '@PHPUnit84Migration:risky' => true,
         'concat_space' => ['spacing' => 'one'],
     ])
     ->setRiskyAllowed(true)
