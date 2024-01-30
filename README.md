@@ -1,6 +1,6 @@
 Bootstrap Menu Bundle
 =====================
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/34vMYXApuzs6spAruM7wQy/JcJXpZqKaYA52SDiAunsPM/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/34vMYXApuzs6spAruM7wQy/JcJXpZqKaYA52SDiAunsPM/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/34vMYXApuzs6spAruM7wQy/JcJXpZqKaYA52SDiAunsPM/tree/main.svg?style=svg&circle-token=691995787d3ce0e1396b73f77a37252166a990c2)](https://dl.circleci.com/status-badge/redirect/circleci/34vMYXApuzs6spAruM7wQy/JcJXpZqKaYA52SDiAunsPM/tree/main)
 
 A simple [Symfony](https://symfony.com/) bundle for defining your application's menus in configuration and rendering them to work with
 [Bootstrap](https://getbootstrap.com/)'s [Navbar](https://getbootstrap.com/docs/5.0/components/navbar/) component. This bundle supports
