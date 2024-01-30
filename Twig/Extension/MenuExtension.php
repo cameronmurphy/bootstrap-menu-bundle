@@ -6,6 +6,9 @@ namespace Camurphy\BootstrapMenuBundle\Twig\Extension;
 
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
 use Twig\Environment as TwigEnvironment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -31,9 +34,9 @@ class MenuExtension extends AbstractExtension
     }
 
     /**
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function renderMenu(TwigEnvironment $environment, string $menuName): string
     {
