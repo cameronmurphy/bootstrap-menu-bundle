@@ -20,3 +20,7 @@ jobs:
       - run:
           name: Test
           command: composer test
+workflows:
+  lint-and-test:
+    jobs:
+      - lint-and-test
