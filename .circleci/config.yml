@@ -1,0 +1,24 @@
+version: 2.1
+orbs:
+  php: circleci/php@1.1.0
+jobs:
+  lint-and-test:
+    executor: php/default
+    steps:
+      - checkout
+      - php/install-php:
+          version: '8.3'
+      - php/install-composer:
+          install-version: '2.6.6'
+      - php/install-packages:
+          cache-key: 'composer.json'
+      - run:
+          name: Lint
+          command: composer lint
+      - run:
+          name: Test
+          command: composer test
+workflows:
+  lint-and-test:
+    jobs:
+      - lint-and-test
