@@ -1,0 +1,27 @@
+# Couldn't automatically generate a config from your source code.
+# This is a generic template to serve as a base for your custom config
+# See: https://circleci.com/docs/configuration-reference
+version: 2.1
+orbs:
+  php: circleci/php@1.1.0
+jobs:
+  install_php:
+    executor: php/default
+    docker:
+      - image: cimg/base:edge
+    steps:
+      - checkout
+      - php/install-php:
+          version: '8.3'
+  install_dependencies:
+    executor: php/default
+    steps:
+      - php/install-composer:
+          install-version: '2.6.6'
+      - php/install-packages
+workflows:
+  install:
+    jobs:
+      - install_php
+      - install_dependencies
+      - php/test
