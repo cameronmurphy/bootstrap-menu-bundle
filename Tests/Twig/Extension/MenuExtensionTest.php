@@ -10,11 +10,15 @@ use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
 use Twig\Environment as TwigEnvironment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
 
 /**
  * @internal
+ *
  * @coversNothing
  */
 final class MenuExtensionTest extends TestCase
@@ -94,7 +98,7 @@ final class MenuExtensionTest extends TestCase
                     'roles' => [],
                 ],
                 'link_1' => [
-                    'label' => 'Link 1 (this should render a nav-link)',
+                    'label' => 'Link 1 (this should render an active nav-link)',
                     'route' => 'app_link_1_route',
                     'route_parameters' => [],
                     'roles' => [],
@@ -209,9 +213,9 @@ final class MenuExtensionTest extends TestCase
     }
 
     /**
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function testRenderMenuBootstrap4(): void
     {
@@ -225,9 +229,9 @@ final class MenuExtensionTest extends TestCase
     }
 
     /**
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function testRenderMenuBootstrap5(): void
     {
@@ -241,19 +245,35 @@ final class MenuExtensionTest extends TestCase
     }
 
     /**
-     * @throws \Twig\Error\LoaderError
+     * @throws LoaderError
      */
     private function mockTwigEnvironment(): MockObject
     {
         $loader = new FilesystemLoader([], $this->rootPath);
         $loader->addPath('Resources/views', 'BootstrapMenu');
 
-        /** @var MockObject|\Twig\Environment $twigMock */
+        /** @var MockObject|TwigEnvironment $twigMock */
         $twigMock = $this->getMockBuilder(TwigEnvironment::class)
             ->setConstructorArgs([$loader])
             ->setMethods(['getExtension'])
             ->getMock()
         ;
+
+        $twigMock->addGlobal('app', [
+            'request' => [
+                'attributes' => new class() {
+                    public function get(string $name): ?string
+                    {
+                        switch ($name) {
+                            case '_route':
+                                return 'app_link_1_route';
+                            default:
+                                return null;
+                        }
+                    }
+                },
+            ],
+        ]);
 
         $securityExtensionMock = $this->getMockBuilder(SecurityExtension::class)
             ->disableOriginalConstructor()
@@ -269,12 +289,12 @@ final class MenuExtensionTest extends TestCase
         ;
 
         $twigMock
-            ->expects(static::any())
+            ->expects(self::any())
             ->method('getExtension')
             ->willReturn($securityExtensionMock)
         ;
 
-        $pathFunction = new TwigFunction('path', function ($route, $routeParameters = []): string {
+        $pathFunction = new TwigFunction('path', static function ($route, $routeParameters = []): string {
             $path = '/' . str_replace('_', '-', $route);
 
             if (\count($routeParameters) > 0) {
