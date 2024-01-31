@@ -1,9 +1,10 @@
 {% apply spaceless %}
   {% if menu_item.label is defined and (menu_item.route is defined or menu_item.url is defined) %}
-  <li class="nav-item">
-    <a class="nav-link" {% include '@BootstrapMenu/href.html.twig' with { menu_item } %}>
-      {{- menu_item.label -}}
-    </a>
-  </li>
+    {% set is_active = app.request.attributes.get('_route') == menu_item.route %}
+    <li class="nav-item">
+      <a class="nav-link{% if is_active %} active{% endif %}"{% if is_active %} aria-current="page"{% endif %} {% include '@BootstrapMenu/href.html.twig' with { menu_item } %}>
+        {{- menu_item.label -}}
+      </a>
+    </li>
   {% endif %}
 {% endapply %}
